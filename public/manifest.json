@@ -1,0 +1,22 @@
+{
+  "name": "لعبة الصوت والصورة",
+  "short_name": "لعبة الصوت",
+  "description": "لعبة تفاعلية للفرق تجمع بين التحدي الصوتي والبصري",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#3b82f6",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

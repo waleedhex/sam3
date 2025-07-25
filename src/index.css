@@ -1,0 +1,145 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* Fun and colorful base colors */
+    --background: 280 100% 97%;
+    --foreground: 240 10% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 15%;
+
+    --primary: 262 100% 65%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 213 95% 88%;
+    --secondary-foreground: 240 10% 15%;
+
+    --muted: 220 14% 96%;
+    --muted-foreground: 240 5% 55%;
+
+    --accent: 320 90% 75%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 262 100% 65%;
+
+    /* Fun game colors */
+    --game-primary: 32 100% 60%;
+    --game-primary-foreground: 0 0% 100%;
+    --game-secondary: 195 100% 55%;
+    --game-secondary-foreground: 0 0% 100%;
+    --game-accent: 320 90% 65%;
+    --game-accent-foreground: 0 0% 100%;
+    
+    /* Vibrant team colors */
+    --team-1: 120 100% 45%;
+    --team-2: 260 100% 60%;
+    
+    /* Colorful gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(32 100% 60%), hsl(195 100% 55%));
+    --gradient-card: linear-gradient(145deg, hsl(280 100% 98%), hsl(0 0% 95%));
+    --gradient-fun: linear-gradient(135deg, hsl(32 100% 85%), hsl(195 100% 85%), hsl(320 90% 85%));
+    
+    --radius: 1rem;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    /* Dark mode with fun colors */
+    --background: 240 20% 8%;
+    --foreground: 210 40% 98%;
+
+    --card: 240 15% 12%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 240 15% 12%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 32 100% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 195 100% 40%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 240 10% 20%;
+    --muted-foreground: 240 5% 65%;
+
+    --accent: 320 90% 65%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 62.8% 50.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 240 10% 25%;
+    --input: 240 10% 25%;
+    --ring: 32 100% 60%;
+    
+    /* Dark mode game colors */
+    --game-primary: 32 100% 60%;
+    --game-primary-foreground: 0 0% 100%;
+    --game-secondary: 195 100% 55%;
+    --game-secondary-foreground: 0 0% 100%;
+    --game-accent: 320 90% 65%;
+    --game-accent-foreground: 0 0% 100%;
+    
+    /* Dark mode team colors */
+    --team-1: 120 100% 50%;
+    --team-2: 260 100% 65%;
+    
+    /* Dark gradients */
+    --gradient-card: linear-gradient(145deg, hsl(240 15% 15%), hsl(240 20% 10%));
+    
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html, body {
+    @apply bg-background text-foreground;
+    height: 100vh;
+    overflow: hidden;
+    -webkit-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    touch-action: manipulation;
+  }
+
+  #root {
+    height: 100vh;
+    overflow: hidden;
+  }
+}
