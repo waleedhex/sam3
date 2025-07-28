@@ -17,7 +17,6 @@ import { useToast } from '@/hooks/use-toast';
 import type { GameState, GameRound } from '@/types/game';
 import countdownSticker from '@/assets/countdown-sticker.png';
 import waitingSticker from '@/assets/waiting-sticker.png';
-import resultsSticker from '@/assets/results-sticker.png';
 
 interface GameScreenProps {
   difficulty: 'easy' | 'hard' | 'random';
@@ -262,7 +261,7 @@ export const GameScreen = ({ difficulty, timeLimit, onGameEnd }: GameScreenProps
       <div className="flex-1 px-4 pb-2 landscape:px-2 landscape:pb-4 landscape:w-1/2">
         <Card className="h-full border border-game-primary/20 bg-gradient-card backdrop-blur-sm">
           <CardContent className="p-4 h-full flex flex-col landscape:p-3">
-            <h3 className="text-lg font-bold text-center mb-3 landscape:text-base landscape:mb-2">الصورة</h3>
+            <div className="text-center mb-3 landscape:mb-2"></div>
             
             <div className="flex-1 rounded-lg border-2 border-dashed border-game-primary/30 flex items-center justify-center bg-muted/20 relative">
               {gameState.showSolution && currentRound ? (
@@ -283,7 +282,7 @@ export const GameScreen = ({ difficulty, timeLimit, onGameEnd }: GameScreenProps
                   <img 
                     src={waitingSticker} 
                     alt="انتظار" 
-                    className="w-24 h-24 mx-auto mb-2 opacity-60"
+                    className="w-32 h-32 mx-auto mb-2"
                   />
                   <p className="text-sm">اضغط "إظهار الحل" لرؤية الصورة</p>
                 </div>
@@ -335,10 +334,9 @@ export const GameScreen = ({ difficulty, timeLimit, onGameEnd }: GameScreenProps
             </div>
             {/* Audio section */}
             <div className="text-center space-y-3 landscape:flex-1 landscape:flex landscape:flex-col landscape:justify-center">
-              <h3 className="text-lg font-bold flex items-center justify-center gap-2">
+              <div className="flex items-center justify-center">
                 <Volume2 className="h-5 w-5 text-game-primary" />
-                الصوت
-              </h3>
+              </div>
               
               {/* Timer */}
               <div className="space-y-2">

@@ -2,7 +2,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Trophy, RotateCcw, Home } from 'lucide-react';
-import resultsSticker from '@/assets/results-sticker.png';
 import victorySticker from '@/assets/victory-sticker.png';
 
 interface ResultsScreenProps {
@@ -18,15 +17,6 @@ export const ResultsScreen = ({ team1Score, team2Score, onPlayAgain, onBackToHom
 
   return (
     <div className="h-screen flex flex-col items-center justify-center bg-gradient-to-br from-background via-card to-background p-4 overflow-hidden" dir="rtl">
-      {/* Results Sticker */}
-      <div className="absolute top-8">
-        <img 
-          src={resultsSticker} 
-          alt="النتائج النهائية" 
-          className="w-24 h-24 drop-shadow-lg"
-        />
-      </div>
-
       <Card className="w-full max-w-sm border-2 border-game-primary/20 bg-gradient-card backdrop-blur-sm">
         <CardHeader className="text-center pb-4">
           <CardTitle className="text-2xl font-bold text-game-primary flex items-center justify-center gap-2">
@@ -41,7 +31,7 @@ export const ResultsScreen = ({ team1Score, team2Score, onPlayAgain, onBackToHom
               <img 
                 src={victorySticker} 
                 alt="فوز!" 
-                className="w-16 h-16 mx-auto"
+                className="w-20 h-20 mx-auto"
               />
               <div className="text-lg font-bold text-game-accent">
                 🎉 الفائز 🎉

@@ -73,14 +73,14 @@ export const AuthScreen = ({ onAuthenticated }: AuthScreenProps) => {
         <img 
           src={welcomeSticker} 
           alt="مرحباً" 
-          className="w-20 h-20 drop-shadow-lg"
+          className="w-32 h-32 drop-shadow-lg"
         />
       </div>
 
       <Card className="w-full max-w-sm border-2 border-game-primary/20 bg-gradient-card backdrop-blur-sm">
         <CardHeader className="text-center pb-4">
           <CardTitle className="text-xl font-bold text-game-primary">
-            لعبة الصوت والصورة
+            أبو مسامع
           </CardTitle>
           <CardDescription className="text-muted-foreground text-sm">
             أدخل رمز الدخول للبدء
@@ -112,7 +112,7 @@ export const AuthScreen = ({ onAuthenticated }: AuthScreenProps) => {
             <img 
               src={waitingSticker} 
               alt="حياكم في متجرنا" 
-              className="w-16 h-16 mx-auto opacity-60 cursor-pointer hover:opacity-100 transition-opacity duration-300"
+              className="w-24 h-24 mx-auto cursor-pointer hover:scale-105 transition-transform duration-300"
               onClick={() => window.open('https://hex-store.com', '_blank')}
             />
             <p className="text-muted-foreground text-sm mt-2">

@@ -6,7 +6,7 @@ import type {
 } from "@/components/ui/toast"
 
 const TOAST_LIMIT = 1
-const TOAST_REMOVE_DELAY = 500
+const TOAST_REMOVE_DELAY = 1000
 
 type ToasterToast = ToastProps & {
   id: string
@@ -140,6 +140,15 @@ function dispatch(action: Action) {
 type Toast = Omit<ToasterToast, "id">
 
 function toast({ ...props }: Toast) {
+  // إظهار التنبيهات فقط للأخطاء
+  if (props.variant !== "destructive") {
+    return {
+      id: "",
+      dismiss: () => {},
+      update: () => {},
+    }
+  }
+
   const id = genId()
 
   const update = (props: ToasterToast) =>
