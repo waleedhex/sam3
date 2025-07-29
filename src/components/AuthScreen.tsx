@@ -67,7 +67,7 @@ export const AuthScreen = ({ onAuthenticated }: AuthScreenProps) => {
   };
 
   return (
-    <div className="min-h-screen h-screen flex flex-col items-center justify-center bg-gradient-to-br from-background via-card to-background p-4 pb-safe pt-safe overflow-y-auto landscape:flex-row landscape:gap-8">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-background via-card to-background p-4 pb-safe pt-safe overflow-y-auto landscape:flex-row landscape:gap-8">
       {/* Welcome Sticker */}
       <div className="absolute top-8">
         <img 
@@ -112,7 +112,7 @@ export const AuthScreen = ({ onAuthenticated }: AuthScreenProps) => {
             <img 
               src={waitingSticker} 
               alt="حياكم في متجرنا" 
-              className="w-24 h-24 mx-auto cursor-pointer hover:scale-105 transition-transform duration-300"
+              className="w-24 h-24 aspect-square object-cover mx-auto cursor-pointer hover:scale-105 transition-transform duration-300"
               onClick={() => window.open('https://hex-store.com', '_blank')}
             />
             <p className="text-muted-foreground text-sm mt-2">
