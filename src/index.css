@@ -132,7 +132,8 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
     height: 100vh;
     height: 100dvh; /* Use dynamic viewport height for mobile */
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
     -webkit-text-size-adjust: 100%;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -142,7 +143,8 @@ All colors MUST be HSL.
   #root {
     height: 100vh;
     height: 100dvh; /* Use dynamic viewport height for mobile */
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 
   /* Safe area utilities for mobile */

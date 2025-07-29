@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -214,16 +214,16 @@ export const GameScreen = ({ difficulty, timeLimit, onGameEnd }: GameScreenProps
   }
 
   return (
-    <div className="min-h-screen flex flex-col landscape:flex-row-reverse bg-gradient-to-br from-background via-card to-background pb-safe pt-safe overflow-y-auto" dir="rtl">
+    <div className="min-h-screen h-screen flex flex-col landscape:flex-row-reverse bg-gradient-to-br from-background via-card to-background pb-safe pt-safe overflow-y-auto landscape:overflow-hidden" dir="rtl">
       <audio ref={audioRef} />
       
       {/* Header with scores - Portrait mode only */}
       <div className="px-4 pt-4 pb-2 flex-shrink-0 landscape:hidden">
-        <Card className="border border-white/20 bg-gradient-card backdrop-blur-sm">
+        <Card className="border border-game-primary/20 bg-gradient-card backdrop-blur-sm">
           <CardContent className="p-3">
             <div className="flex justify-between items-center">
               <div className="flex items-center gap-2">
-                <Badge variant="outline" className="text-sm px-3 py-1 border-white/20">
+                <Badge variant="outline" className="text-sm px-3 py-1">
                   الجولة {gameState.currentRound}
                 </Badge>
                 <Badge 
@@ -257,11 +257,13 @@ export const GameScreen = ({ difficulty, timeLimit, onGameEnd }: GameScreenProps
         </Card>
       </div>
 
-      {/* Image area - Right side in landscape, increased height in portrait */}
-      <div className="flex-[2] px-4 pb-2 landscape:px-2 landscape:pb-4 landscape:w-1/2 landscape:flex-1">
-        <Card className="h-full border border-white/20 bg-gradient-card backdrop-blur-sm">
+      {/* Image area - Right side in landscape */}
+      <div className="flex-1 px-4 pb-2 landscape:px-2 landscape:pb-4 landscape:w-1/2">
+        <Card className="h-full border border-game-primary/20 bg-gradient-card backdrop-blur-sm">
           <CardContent className="p-4 h-full flex flex-col landscape:p-3">
-            <div className="flex-1 rounded-lg border-2 border-dashed border-white/30 flex items-center justify-center bg-muted/20 relative">
+            <div className="text-center mb-3 landscape:mb-2"></div>
+            
+            <div className="flex-1 rounded-lg border-2 border-dashed border-game-primary/30 flex items-center justify-center bg-muted/20 relative">
               {gameState.showSolution && currentRound ? (
                 <img 
                   src={currentRound.imageFile} 
@@ -292,16 +294,16 @@ export const GameScreen = ({ difficulty, timeLimit, onGameEnd }: GameScreenProps
 
       {/* Controls area - Left side in landscape */}
       <div className="px-4 pb-4 flex-shrink-0 landscape:px-2 landscape:pb-4 landscape:w-1/2 landscape:flex landscape:flex-col">
-        <Card className="border border-white/20 bg-gradient-card backdrop-blur-sm landscape:h-full">
-          <CardContent className="p-4 space-y-3 landscape:p-3 landscape:space-y-2 landscape:h-full landscape:flex landscape:flex-col">
+        <Card className="border border-game-primary/20 bg-gradient-card backdrop-blur-sm landscape:h-full">
+          <CardContent className="p-4 space-y-4 landscape:p-3 landscape:space-y-3 landscape:h-full landscape:flex landscape:flex-col">
             
             {/* Header with scores - Landscape mode only */}
             <div className="hidden landscape:block">
               <div className="flex justify-between items-center mb-3">
                 <div className="flex items-center gap-2">
-                <Badge variant="outline" className="text-xs px-2 py-1 border-white/20">
-                  الجولة {gameState.currentRound}
-                </Badge>
+                  <Badge variant="outline" className="text-xs px-2 py-1">
+                    الجولة {gameState.currentRound}
+                  </Badge>
                   <Badge 
                     variant="outline" 
                     className={`text-xs px-2 py-1 ${
@@ -375,12 +377,21 @@ export const GameScreen = ({ difficulty, timeLimit, onGameEnd }: GameScreenProps
             </div>
 
             {/* Game controls */}
-            <div className="flex flex-col gap-3 landscape:gap-2">
-              <div className="flex gap-2 justify-center">
+            <div className="flex justify-between items-center gap-2">
+              <Button
+                onClick={() => onGameEnd(gameState.team1Score, gameState.team2Score)}
+                variant="outline"
+                size="sm"
+                className="border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground"
+              >
+                إنهاء
+              </Button>
+              
+              <div className="flex gap-2">
                 <Button
                   onClick={addScore}
                   size="sm"
-                  className="bg-game-primary text-game-primary-foreground hover:bg-game-primary/90 flex-1"
+                  className="bg-game-primary text-game-primary-foreground hover:bg-game-primary/90"
                 >
                   <Trophy className="mr-1 h-4 w-4" />
                   نقطة
@@ -389,21 +400,12 @@ export const GameScreen = ({ difficulty, timeLimit, onGameEnd }: GameScreenProps
                 <Button
                   onClick={nextRound}
                   size="sm"
-                  className="bg-game-secondary text-game-secondary-foreground hover:bg-game-secondary/90 flex-1"
+                  className="bg-game-secondary text-game-secondary-foreground hover:bg-game-secondary/90"
                 >
                   التالي
                   <ArrowRight className="ml-1 h-4 w-4" />
                 </Button>
               </div>
-              
-              <Button
-                onClick={() => onGameEnd(gameState.team1Score, gameState.team2Score)}
-                variant="outline"
-                size="sm"
-                className="border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground w-full"
-              >
-                إنهاء
-              </Button>
             </div>
           </CardContent>
         </Card>
