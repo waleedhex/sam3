@@ -195,7 +195,7 @@ export const GameScreen = ({ difficulty, timeLimit, onGameEnd }: GameScreenProps
 
   if (isCountingDown) {
     return (
-      <div className="h-screen flex flex-col items-center justify-center bg-gradient-to-br from-background via-card to-background overflow-hidden">
+      <div className="min-h-screen h-screen flex flex-col items-center justify-center bg-gradient-to-br from-background via-card to-background pb-safe pt-safe overflow-y-auto">
         <div className="text-center">
           <img 
             src={countdownSticker} 
@@ -214,7 +214,7 @@ export const GameScreen = ({ difficulty, timeLimit, onGameEnd }: GameScreenProps
   }
 
   return (
-    <div className="h-screen flex flex-col landscape:flex-row-reverse bg-gradient-to-br from-background via-card to-background overflow-hidden" dir="rtl">
+    <div className="min-h-screen h-screen flex flex-col landscape:flex-row-reverse bg-gradient-to-br from-background via-card to-background pb-safe pt-safe overflow-y-auto landscape:overflow-hidden" dir="rtl">
       <audio ref={audioRef} />
       
       {/* Header with scores - Portrait mode only */}

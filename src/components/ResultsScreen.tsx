@@ -16,7 +16,7 @@ export const ResultsScreen = ({ team1Score, team2Score, onPlayAgain, onBackToHom
   const isDraw = team1Score === team2Score;
 
   return (
-    <div className="h-screen flex flex-col items-center justify-center bg-gradient-to-br from-background via-card to-background p-4 overflow-hidden" dir="rtl">
+    <div className="min-h-screen h-screen flex flex-col items-center justify-center bg-gradient-to-br from-background via-card to-background p-4 pb-safe pt-safe overflow-y-auto" dir="rtl">
       <Card className="w-full max-w-sm border-2 border-game-primary/20 bg-gradient-card backdrop-blur-sm">
         <CardHeader className="text-center pb-4">
           <CardTitle className="text-2xl font-bold text-game-primary flex items-center justify-center gap-2">
