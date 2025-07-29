@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -214,7 +214,7 @@ export const GameScreen = ({ difficulty, timeLimit, onGameEnd }: GameScreenProps
   }
 
   return (
-    <div className="min-h-screen flex flex-col landscape:flex-row-reverse bg-gradient-to-br from-background via-card to-background pb-safe pt-safe overflow-y-auto landscape:overflow-hidden" dir="rtl">
+    <div className="min-h-screen flex flex-col landscape:flex-row-reverse bg-gradient-to-br from-background via-card to-background pb-safe pt-safe overflow-y-auto" dir="rtl">
       <audio ref={audioRef} />
       
       {/* Header with scores - Portrait mode only */}
@@ -223,7 +223,7 @@ export const GameScreen = ({ difficulty, timeLimit, onGameEnd }: GameScreenProps
           <CardContent className="p-3">
             <div className="flex justify-between items-center">
               <div className="flex items-center gap-2">
-                <Badge variant="outline" className="text-sm px-3 py-1">
+                <Badge variant="outline" className="text-sm px-3 py-1 border-white/20">
                   الجولة {gameState.currentRound}
                 </Badge>
                 <Badge 
@@ -257,13 +257,11 @@ export const GameScreen = ({ difficulty, timeLimit, onGameEnd }: GameScreenProps
         </Card>
       </div>
 
-      {/* Image area - Right side in landscape */}
-      <div className="flex-1 px-4 pb-2 landscape:px-2 landscape:pb-4 landscape:w-1/2">
+      {/* Image area - Right side in landscape, increased height in portrait */}
+      <div className="flex-[2] px-4 pb-2 landscape:px-2 landscape:pb-4 landscape:w-1/2 landscape:flex-1">
         <Card className="h-full border border-white/20 bg-gradient-card backdrop-blur-sm">
           <CardContent className="p-4 h-full flex flex-col landscape:p-3">
-            <div className="text-center mb-3 landscape:mb-2"></div>
-            
-            <div className="flex-1 rounded-lg border-2 border-dashed border-game-primary/30 flex items-center justify-center bg-muted/20 relative">
+            <div className="flex-1 rounded-lg border-2 border-dashed border-white/30 flex items-center justify-center bg-muted/20 relative">
               {gameState.showSolution && currentRound ? (
                 <img 
                   src={currentRound.imageFile} 
@@ -301,9 +299,9 @@ export const GameScreen = ({ difficulty, timeLimit, onGameEnd }: GameScreenProps
             <div className="hidden landscape:block">
               <div className="flex justify-between items-center mb-3">
                 <div className="flex items-center gap-2">
-                  <Badge variant="outline" className="text-xs px-2 py-1">
-                    الجولة {gameState.currentRound}
-                  </Badge>
+                <Badge variant="outline" className="text-xs px-2 py-1 border-white/20">
+                  الجولة {gameState.currentRound}
+                </Badge>
                   <Badge 
                     variant="outline" 
                     className={`text-xs px-2 py-1 ${
