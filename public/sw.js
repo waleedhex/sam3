@@ -54,18 +54,7 @@ self.addEventListener('install', (event) => {
           '/assets/waiting-sticker.png'
         ];
         
-        return cache.addAll(essentialFiles)
-          .then(() => {
-            // ثم تخزين ملفات اللعبة تدريجياً
-            return Promise.allSettled(
-              urlsToCache.slice(essentialFiles.length).map(url => 
-                cache.add(url).catch(err => {
-                  console.warn(`Failed to cache ${url}:`, err);
-                  return null;
-                })
-              )
-            );
-          });
+        return cache.addAll(urlsToCache);
       })
       .then(() => {
         console.log('Service Worker: Files cached successfully');

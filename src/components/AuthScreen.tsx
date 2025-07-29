@@ -67,7 +67,7 @@ export const AuthScreen = ({ onAuthenticated }: AuthScreenProps) => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-background via-card to-background p-4 pb-safe pt-safe overflow-y-auto landscape:flex-row landscape:gap-8">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-background p-4 pb-safe pt-safe overflow-y-auto landscape:flex-row landscape:gap-8">
       {/* Welcome Sticker */}
       <div className="absolute top-8">
         <img 
