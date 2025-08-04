@@ -48,8 +48,8 @@ export const GameScreen = ({ difficulty, timeLimit, onGameEnd }: GameScreenProps
   const generateRound = (): GameRound => {
     // عدد الملفات حسب المستوى
     const fileCount = {
-      easy: 30,  // 30 ملف في المستوى السهل
-      hard: 70   // 70 ملف في المستوى الصعب
+      easy: 29,  // 30 ملف في المستوى السهل
+      hard: 66   // 70 ملف في المستوى الصعب
     };
     
     let roundDifficulty: 'easy' | 'hard';
