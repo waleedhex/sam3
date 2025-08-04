@@ -17,13 +17,13 @@ const generateFilesToCache = () => {
   ];
 
   // إضافة الملفات الصوتية للمستوى السهل (30 ملف)
-  for (let i = 1; i <= 30; i++) {
+  for (let i = 1; i <= 29; i++) {
     files.push(`/assets/easy/audio${i}.mp3`);
     files.push(`/assets/easy/image${i}.webp`);
   }
 
   // إضافة الملفات الصوتية للمستوى الصعب (70 ملف)
-  for (let i = 1; i <= 70; i++) {
+  for (let i = 1; i <= 66; i++) {
     files.push(`/assets/hard/audio${i}.mp3`);
     files.push(`/assets/hard/image${i}.webp`);
   }
