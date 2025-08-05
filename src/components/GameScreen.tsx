@@ -216,12 +216,6 @@ export const GameScreen = ({ difficulty, timeLimit, onGameEnd }: GameScreenProps
       clearInterval(timerRef.current);
     }
     
-    // Check if game should end (after 10 rounds or if one team has significant lead)
-    if (gameState.currentRound >= 10 || Math.abs(gameState.team1Score - gameState.team2Score) >= 5) {
-      onGameEnd(gameState.team1Score, gameState.team2Score);
-      return;
-    }
-    
     setGameState(prev => ({
       ...prev,
       currentRound: prev.currentRound + 1,
@@ -268,49 +262,9 @@ export const GameScreen = ({ difficulty, timeLimit, onGameEnd }: GameScreenProps
   return (
     <div className="min-h-screen h-screen flex flex-col landscape:flex-row-reverse bg-gradient-to-br from-background via-card to-background pb-safe pt-safe overflow-y-auto landscape:overflow-hidden" dir="rtl">
       <audio ref={audioRef} />
-      
-      {/* Header with scores - Portrait mode only */}
-      <div className="px-4 pt-4 pb-2 flex-shrink-0 landscape:hidden">
-        <Card className="border border-game-primary/20 bg-gradient-card backdrop-blur-sm">
-          <CardContent className="p-3">
-            <div className="flex justify-between items-center">
-              <div className="flex items-center gap-2">
-                <Badge variant="outline" className="text-sm px-3 py-1">
-                  الجولة {gameState.currentRound}
-                </Badge>
-                <Badge 
-                  variant="outline" 
-                  className={`text-sm px-3 py-1 ${
-                    gameState.currentTeam === 1 ? 'border-team-1 text-team-1' : 'border-team-2 text-team-2'
-                  }`}
-                >
-                  الفريق {gameState.currentTeam}
-                </Badge>
-              </div>
-              
-              <div className="flex gap-4">
-                <div className="text-center">
-                  <div className="text-xs text-muted-foreground">فريق 1</div>
-                  <div className="text-lg font-bold text-team-1 flex items-center gap-1">
-                    <Trophy className="h-4 w-4" />
-                    {gameState.team1Score}
-                  </div>
-                </div>
-                <div className="text-center">
-                  <div className="text-xs text-muted-foreground">فريق 2</div>
-                  <div className="text-lg font-bold text-team-2 flex items-center gap-1">
-                    <Trophy className="h-4 w-4" />
-                    {gameState.team2Score}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
 
       {/* Image area - Right side in landscape */}
-      <div className="flex-1 px-4 pb-2 landscape:px-2 landscape:pb-4 landscape:w-1/2">
+      <div className="flex-1 px-4 pt-4 pb-2 landscape:px-2 landscape:pb-4 landscape:w-1/2">
         <Card className="h-full border border-game-primary/20 bg-gradient-card backdrop-blur-sm">
           <CardContent className="p-4 h-full flex flex-col landscape:p-3">
             <div className="text-center mb-3 landscape:mb-2"></div>
@@ -339,6 +293,42 @@ export const GameScreen = ({ difficulty, timeLimit, onGameEnd }: GameScreenProps
                   <p className="text-sm">اضغط "إظهار الحل" لرؤية الصورة</p>
                 </div>
               )}
+            </div>
+            
+            {/* Score and Round display below image */}
+            <div className="mt-3 pt-3 border-t border-game-primary/20">
+              <div className="flex justify-between items-center">
+                <div className="flex items-center gap-2">
+                  <Badge variant="outline" className="text-sm px-3 py-1">
+                    الجولة {gameState.currentRound}
+                  </Badge>
+                  <Badge 
+                    variant="outline" 
+                    className={`text-sm px-3 py-1 ${
+                      gameState.currentTeam === 1 ? 'border-team-1 text-team-1' : 'border-team-2 text-team-2'
+                    }`}
+                  >
+                    الفريق {gameState.currentTeam}
+                  </Badge>
+                </div>
+                
+                <div className="flex gap-4">
+                  <div className="text-center">
+                    <div className="text-xs text-muted-foreground">فريق 1</div>
+                    <div className="text-lg font-bold text-team-1 flex items-center gap-1">
+                      <Trophy className="h-4 w-4" />
+                      {gameState.team1Score}
+                    </div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-xs text-muted-foreground">فريق 2</div>
+                    <div className="text-lg font-bold text-team-2 flex items-center gap-1">
+                      <Trophy className="h-4 w-4" />
+                      {gameState.team2Score}
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -443,7 +433,7 @@ export const GameScreen = ({ difficulty, timeLimit, onGameEnd }: GameScreenProps
                 <Button
                   onClick={addScore}
                   size="sm"
-                  className="bg-game-primary text-game-primary-foreground hover:bg-game-primary/90"
+                  className="bg-game-primary text-game-primary-foreground hover:bg-game-primary/90 transition-all duration-200 active:scale-95 hover:shadow-lg hover:shadow-game-primary/25"
                 >
                   <Trophy className="mr-1 h-4 w-4" />
                   نقطة

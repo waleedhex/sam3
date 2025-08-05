@@ -77,45 +77,43 @@ self.addEventListener('install', (event) => {
 // Fetch event - serve cached files when offline
 self.addEventListener('fetch', (event) => {
   event.respondWith(
-    caches.match(event.request)
-      .then((response) => {
-        if (response) {
-          // إرجاع النسخة المحفوظة في الذاكرة التخزينية
-          return response;
+    caches.match(event.request).then((response) => {
+      if (response) {
+        return response;
+      }
+
+      return fetch(event.request).then((networkResponse) => {
+        if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
+          return networkResponse;
         }
-        
-        // محاولة جلب الملف من الشبكة
-        return fetch(event.request)
-          .then((response) => {
-            // التحقق من صحة الاستجابة
-            if (!response || response.status !== 200 || response.type !== 'basic') {
-              return response;
-            }
 
-            // نسخ الاستجابة لحفظها في الذاكرة التخزينية
-            const responseToCache = response.clone();
+        const responseToCache = networkResponse.clone();
+        caches.open(CACHE_NAME).then((cache) => {
+          cache.put(event.request, responseToCache);
+        });
 
-            caches.open(CACHE_NAME)
-              .then((cache) => {
-                cache.put(event.request, responseToCache);
-              });
+        return networkResponse;
+      }).catch(() => {
+        // 👇 معالجة الطلبات الفاشلة أثناء وضع الطيران
+        if (event.request.destination === 'image') {
+          return new Response('', { status: 404 });
+        }
+        if (event.request.destination === 'audio') {
+          return new Response('', { status: 404 });
+        }
+        if (event.request.mode === 'navigate') {
+          return caches.match('/');
+        }
 
-            return response;
+        return new Response('المحتوى غير متاح في وضع عدم الاتصال', {
+          status: 503,
+          statusText: 'Service Unavailable',
+          headers: new Headers({
+            'Content-Type': 'text/plain; charset=utf-8'
           })
-          .catch(() => {
-            // في حالة عدم توفر الشبكة، إرجاع صفحة افتراضية للملفات الأساسية
-            if (event.request.mode === 'navigate') {
-              return caches.match('/');
-            }
-            return new Response('المحتوى غير متاح في وضع عدم الاتصال', {
-              status: 503,
-              statusText: 'Service Unavailable',
-              headers: new Headers({
-                'Content-Type': 'text/plain; charset=utf-8'
-              })
-            });
-          });
-      })
+        });
+      });
+    })
   );
 });
 
