@@ -48,8 +48,8 @@ export const GameScreen = ({ difficulty, timeLimit, onGameEnd }: GameScreenProps
   const generateRound = (): GameRound => {
     // عدد الملفات حسب المستوى
     const fileCount = {
-      easy: 29,  // 30 ملف في المستوى السهل
-      hard: 66   // 70 ملف في المستوى الصعب
+      easy: 29,  // 29 ملف في المستوى السهل
+      hard: 66   // 66 ملف في المستوى الصعب
     };
     
     let roundDifficulty: 'easy' | 'hard';
@@ -100,8 +100,22 @@ export const GameScreen = ({ difficulty, timeLimit, onGameEnd }: GameScreenProps
 
     // Play audio automatically after countdown
     setTimeout(() => {
-      playAudio();
-    }, 500);
+      if (round && audioRef.current) {
+        // تأكد من تحديث مصدر الصوت قبل التشغيل
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+        audioRef.current.src = round.audioFile;
+        audioRef.current.load(); // تحميل الملف الجديد
+        
+        audioRef.current.play().catch(() => {
+          toast({
+            title: "خطأ في تشغيل الصوت",
+            description: "تعذر تشغيل الملف الصوتي",
+            variant: "destructive",
+          });
+        });
+      }
+    }, 100);
 
     // Start timer
     startTimer();
@@ -126,7 +140,12 @@ export const GameScreen = ({ difficulty, timeLimit, onGameEnd }: GameScreenProps
 
   const playAudio = () => {
     if (currentRound && audioRef.current) {
+      // تأكد من تحديث مصدر الصوت قبل التشغيل
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
       audioRef.current.src = currentRound.audioFile;
+      audioRef.current.load(); // تحميل الملف الجديد
+      
       audioRef.current.play().catch(() => {
         toast({
           title: "خطأ في تشغيل الصوت",
