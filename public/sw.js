@@ -1,4 +1,4 @@
-const CACHE_NAME = 'abu-masamea-game-v2';
+const CACHE_NAME = 'abu-masamea-game-v3';
 
 // إنشاء قائمة الملفات للتخزين المؤقت
 const generateFilesToCache = () => {
