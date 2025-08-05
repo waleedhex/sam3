@@ -1,28 +1,32 @@
-const CACHE_NAME = 'abu-masamea-game-v1';
+const CACHE_NAME = 'abu-masamea-game-v2';
 
 // إنشاء قائمة الملفات للتخزين المؤقت
 const generateFilesToCache = () => {
   const files = [
     '/',
-    '/static/js/bundle.js',
-    '/static/css/main.css',
+    '/src/main.tsx',
+    '/src/index.css',
+    '/src/App.tsx',
+    '/src/App.css',
     '/assets/codes.json',
     '/icon-192.png',
     '/icon-512.png',
+    '/manifest.json',
     // الستيكرات - في مجلد src/assets ولكن تُخدم من assets
-    '/assets/welcome-sticker.png',
-    '/assets/countdown-sticker.png',
-    '/assets/victory-sticker.png',
-    '/assets/waiting-sticker.png'
+    '/src/assets/welcome-sticker.png',
+    '/src/assets/countdown-sticker.png',
+    '/src/assets/victory-sticker.png',
+    '/src/assets/waiting-sticker.png',
+    '/src/assets/results-sticker.png'
   ];
 
-  // إضافة الملفات الصوتية للمستوى السهل (30 ملف)
+// إضافة الملفات الصوتية للمستوى السهل (29 ملف)
   for (let i = 1; i <= 29; i++) {
     files.push(`/assets/easy/audio${i}.mp3`);
     files.push(`/assets/easy/image${i}.webp`);
   }
 
-  // إضافة الملفات الصوتية للمستوى الصعب (70 ملف)
+  // إضافة الملفات الصوتية للمستوى الصعب (66 ملف)
   for (let i = 1; i <= 66; i++) {
     files.push(`/assets/hard/audio${i}.mp3`);
     files.push(`/assets/hard/image${i}.webp`);
@@ -43,15 +47,18 @@ self.addEventListener('install', (event) => {
         // تخزين الملفات الأساسية أولاً
         const essentialFiles = [
           '/',
-          '/static/js/bundle.js',
-          '/static/css/main.css',
+          '/src/main.tsx',
+          '/src/index.css',
+          '/src/App.tsx',
           '/assets/codes.json',
           '/icon-192.png',
           '/icon-512.png',
-          '/assets/welcome-sticker.png',
-          '/assets/countdown-sticker.png',
-          '/assets/victory-sticker.png',
-          '/assets/waiting-sticker.png'
+          '/manifest.json',
+          '/src/assets/welcome-sticker.png',
+          '/src/assets/countdown-sticker.png',
+          '/src/assets/victory-sticker.png',
+          '/src/assets/waiting-sticker.png',
+          '/src/assets/results-sticker.png'
         ];
         
         return cache.addAll(urlsToCache);
