@@ -41,6 +41,10 @@ export const GameScreen = ({ difficulty, timeLimit, onGameEnd }: GameScreenProps
   const [countdown, setCountdown] = useState(3);
   const [isCountingDown, setIsCountingDown] = useState(false);
   const [currentRound, setCurrentRound] = useState<GameRound | null>(null);
+  const [usedFiles, setUsedFiles] = useState<{easy: Set<number>, hard: Set<number>}>({
+    easy: new Set(),
+    hard: new Set()
+  });
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const { toast } = useToast();
@@ -61,7 +65,36 @@ export const GameScreen = ({ difficulty, timeLimit, onGameEnd }: GameScreenProps
     }
     
     const maxFiles = fileCount[roundDifficulty];
-    const roundNumber = Math.floor(Math.random() * maxFiles) + 1;
+    const usedForDifficulty = usedFiles[roundDifficulty];
+    
+    // إذا تم استخدام كل الملفات، إعادة تعيين القائمة
+    if (usedForDifficulty.size >= maxFiles) {
+      setUsedFiles(prev => ({
+        ...prev,
+        [roundDifficulty]: new Set()
+      }));
+    }
+    
+    // إنشاء قائمة بالأرقام المتاحة (غير المستخدمة)
+    const availableNumbers = [];
+    for (let i = 1; i <= maxFiles; i++) {
+      if (!usedForDifficulty.has(i)) {
+        availableNumbers.push(i);
+      }
+    }
+    
+    // إذا لم تبق أرقام متاحة، استخدم كل الأرقام
+    const numbersToChooseFrom = availableNumbers.length > 0 ? availableNumbers : Array.from({length: maxFiles}, (_, i) => i + 1);
+    
+    // اختيار رقم عشوائي من الأرقام المتاحة
+    const randomIndex = Math.floor(Math.random() * numbersToChooseFrom.length);
+    const roundNumber = numbersToChooseFrom[randomIndex];
+    
+    // إضافة الرقم المختار إلى قائمة المستخدمة
+    setUsedFiles(prev => ({
+      ...prev,
+      [roundDifficulty]: new Set([...prev[roundDifficulty], roundNumber])
+    }));
 
     return {
       audioFile: `/assets/${roundDifficulty}/audio${roundNumber}.mp3`,
