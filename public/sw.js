@@ -1,26 +1,16 @@
-const CACHE_NAME = 'abu-masamea-game-v3';
+const CACHE_NAME = 'abu-masamea-game-v4-offline';
 
 // إنشاء قائمة الملفات للتخزين المؤقت
 const generateFilesToCache = () => {
   const files = [
     '/',
-    '/src/main.tsx',
-    '/src/index.css',
-    '/src/App.tsx',
-    '/src/App.css',
     '/assets/codes.json',
     '/icon-192.png',
     '/icon-512.png',
-    '/manifest.json',
-    // الستيكرات - في مجلد src/assets ولكن تُخدم من assets
-    '/src/assets/welcome-sticker.png',
-    '/src/assets/countdown-sticker.png',
-    '/src/assets/victory-sticker.png',
-    '/src/assets/waiting-sticker.png',
-    '/src/assets/results-sticker.png'
+    '/manifest.json'
   ];
 
-// إضافة الملفات الصوتية للمستوى السهل (29 ملف)
+  // إضافة الملفات الصوتية للمستوى السهل (29 ملف)
   for (let i = 1; i <= 29; i++) {
     files.push(`/assets/easy/audio${i}.mp3`);
     files.push(`/assets/easy/image${i}.webp`);
@@ -43,29 +33,12 @@ self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => {
-        console.log('Service Worker: Caching files...');
-        // تخزين الملفات الأساسية أولاً
-        const essentialFiles = [
-          '/',
-          '/src/main.tsx',
-          '/src/index.css',
-          '/src/App.tsx',
-          '/assets/codes.json',
-          '/icon-192.png',
-          '/icon-512.png',
-          '/manifest.json',
-          '/src/assets/welcome-sticker.png',
-          '/src/assets/countdown-sticker.png',
-          '/src/assets/victory-sticker.png',
-          '/src/assets/waiting-sticker.png',
-          '/src/assets/results-sticker.png'
-        ];
-        
+        console.log('Service Worker: Caching all files...');
+        console.log('Total files to cache:', urlsToCache.length);
         return cache.addAll(urlsToCache);
       })
       .then(() => {
-        console.log('Service Worker: Files cached successfully');
-        // فرض تفعيل الـ service worker الجديد فوراً
+        console.log('Service Worker: All files cached successfully');
         return self.skipWaiting();
       })
       .catch(err => {
@@ -74,47 +47,91 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// Fetch event - serve cached files when offline
+// Fetch event - Cache First Strategy للملفات الثابتة
 self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request).then((response) => {
-      if (response) {
-        return response;
-      }
-
-      return fetch(event.request).then((networkResponse) => {
-        if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
-          return networkResponse;
+  const url = new URL(event.request.url);
+  
+  // Cache-first للملفات الثابتة (صوت، صور، assets)
+  if (url.pathname.includes('/assets/') || 
+      url.pathname.includes('.mp3') || 
+      url.pathname.includes('.webp') ||
+      url.pathname.includes('.png') ||
+      url.pathname.includes('.json')) {
+    
+    event.respondWith(
+      caches.match(event.request).then((cachedResponse) => {
+        if (cachedResponse) {
+          console.log('Serving from cache:', url.pathname);
+          return cachedResponse;
         }
-
-        const responseToCache = networkResponse.clone();
-        caches.open(CACHE_NAME).then((cache) => {
-          cache.put(event.request, responseToCache);
+        
+        console.log('Cache miss, fetching:', url.pathname);
+        return fetch(event.request).then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const responseToCache = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(event.request, responseToCache);
+            });
+          }
+          return networkResponse;
+        }).catch((error) => {
+          console.error('Fetch failed for:', url.pathname, error);
+          
+          // في حالة فشل تحميل الملفات، إرجاع استجابة فارغة بدلاً من خطأ
+          if (url.pathname.includes('.mp3')) {
+            return new Response(new ArrayBuffer(0), {
+              status: 200,
+              headers: { 'Content-Type': 'audio/mpeg' }
+            });
+          }
+          
+          if (url.pathname.includes('.webp') || url.pathname.includes('.png')) {
+            // إنشاء صورة شفافة 1x1 pixel
+            const transparentPixel = new Uint8Array([
+              137, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 13, 73, 72, 68, 82, 0, 0, 0, 1, 0, 0, 0, 1, 8, 6, 0, 0, 0, 31, 21, 196, 137, 0, 0, 0, 11, 73, 68, 65, 84, 120, 218, 99, 248, 15, 0, 1, 1, 1, 0, 24, 221, 219, 165, 0, 0, 0, 0, 73, 69, 78, 68, 174, 66, 96, 130
+            ]);
+            return new Response(transparentPixel, {
+              status: 200,
+              headers: { 'Content-Type': 'image/png' }
+            });
+          }
+          
+          return new Response('', { status: 404 });
         });
-
+      })
+    );
+  } else {
+    // Network-first للملفات الأخرى
+    event.respondWith(
+      fetch(event.request).then((networkResponse) => {
+        if (networkResponse && networkResponse.status === 200) {
+          const responseToCache = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, responseToCache);
+          });
+        }
         return networkResponse;
       }).catch(() => {
-        // 👇 معالجة الطلبات الفاشلة أثناء وضع الطيران
-        if (event.request.destination === 'image') {
-          return new Response('', { status: 404 });
-        }
-        if (event.request.destination === 'audio') {
-          return new Response('', { status: 404 });
-        }
-        if (event.request.mode === 'navigate') {
-          return caches.match('/');
-        }
-
-        return new Response('المحتوى غير متاح في وضع عدم الاتصال', {
-          status: 503,
-          statusText: 'Service Unavailable',
-          headers: new Headers({
-            'Content-Type': 'text/plain; charset=utf-8'
-          })
+        return caches.match(event.request).then((cachedResponse) => {
+          if (cachedResponse) {
+            return cachedResponse;
+          }
+          
+          if (event.request.mode === 'navigate') {
+            return caches.match('/');
+          }
+          
+          return new Response('المحتوى غير متاح في وضع عدم الاتصال', {
+            status: 503,
+            statusText: 'Service Unavailable',
+            headers: new Headers({
+              'Content-Type': 'text/plain; charset=utf-8'
+            })
+          });
         });
-      });
-    })
-  );
+      })
+    );
+  }
 });
 
 // Activate event - clean up old caches
